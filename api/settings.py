@@ -80,15 +80,24 @@ WSGI_APPLICATION = 'api.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'techsarvarbek_djangohellotech',
-        'USER': 'techsarvarbek',
+        'USER': '360346_admin',
         'PASSWORD': '0126s100',
-        'HOST': 'postgresql-techsarvarbek.alwaysdata.net',
-        'PORT': '5432',  # Default PostgreSQL port
+        'HOST': 'mysql-techsarvarbek.alwaysdata.net',
+        # 'PORT': '',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'techsarvarbek_djangohellotech',
+#         'USER': 'techsarvarbek',
+#         'PASSWORD': '0126s100',
+#         'HOST': 'postgresql-techsarvarbek.alwaysdata.net',
+#         'PORT': '5432',  # Default PostgreSQL port
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
