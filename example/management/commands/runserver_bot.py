@@ -1,19 +1,25 @@
-import asyncio
-import threading
+# runserver_bot.py
 import logging
-from django.core.management.base import BaseCommand
-from example.bot import main as bot_main  # Ensure this is the correct import path for your bot
+import threading
+import telebot
+from django.core.management.commands.runserver import Command as RunserverCommand
+from example.bot import run_dispatcher
+from data.config import BOT_TOKEN
 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class Command(BaseCommand):
-    help = "Run the aiogram bot concurrently with the Django server"
+class Command(RunserverCommand):
+    def handle(self, *args, **options):
+        # Function to start the Django server without the autoreloader
+        def start_django(self, *args, **options):
+            logger.info("Starting Django server...")
+            self.handle()
 
-    def handle(self, *args, **kwargs):
-        # Start the aiogram bot in a separate thread
-        def start_bot():
-            logger.info("Starting aiogram bot...")
-            asyncio.run(bot_main())
-        
-        bot_thread = threading.Thread(target=start_bot)
-        bot_thread.start()
+        # Start the Django server in a separate thread
+        django_thread = threading.Thread(target=start_django)
+        django_thread.start()
+
+        # Start the telegram bot
+        logger.info("Starting telegram bot...")
+        run_dispatcher()
