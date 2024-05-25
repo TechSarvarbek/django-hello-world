@@ -80,12 +80,12 @@ WSGI_APPLICATION = 'api.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'techsarvarbek_djangohellotech',
-        'USER': '360346_admin',
+        'USER': 'techsarvarbek',
         'PASSWORD': '0126s100',
-        'HOST': 'mysql-techsarvarbek.alwaysdata.net',
-        'PORT': '3306',  # Default MySQL port, adjust if necessary
+        'HOST': 'postgresql-techsarvarbek.alwaysdata.net',
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
 

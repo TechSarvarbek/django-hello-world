@@ -1,12 +1,17 @@
-import mysql.connector
+import psycopg2
+from psycopg2 import sql
 
 # Connection details
 config = {
-    "host": "mysql-techsarvarbek.alwaysdata.net",
-    "user": "360346_admin",
+    "host": "postgresql-techsarvarbek.alwaysdata.net",
+    "user": "techsarvarbek",
     "password": "0126s100",
-    "database": "techsarvarbek_djangohellotech"
+    "dbname": "techsarvarbek_djangohellotech"
 }
 
 # Establish a connection
-connection = mysql.connector.connect(**config)
+try:
+    connection = psycopg2.connect(**config)
+    print("Connection to PostgreSQL DB successful")
+except Exception as error:
+    print(f"Error: {error}")
