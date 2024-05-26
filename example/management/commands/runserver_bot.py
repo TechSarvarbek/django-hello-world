@@ -1,28 +1,37 @@
+import asyncio
 import logging
 import threading
-import telebot
 from django.core.management.commands.runserver import Command as RunserverCommand
-from example.bot import run_dispatcher
-from data.config import BOT_TOKEN
+import logging
+from django.core.management.base import BaseCommand
+from example.bot import main as bot_main  # Assuming bot_main is the entry point for your aiogram bot
+from example.bot import main as bot_main  # Ensure this is the correct import path for your bot
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', 
-    level=logging.INFO
-)
 logger = logging.getLogger(__name__)
 
-class Command(RunserverCommand):
-    def handle(self, *args, **options):
+class Command(BaseCommand):
+    help = "Run Django server and aiogram bot concurrently"
+    help = "Run the aiogram bot concurrently with the Django server"
+
+    def handle(self, *args, **kwargs):
         # Function to start the Django server without the autoreloader
-        def start_django(*args, **options):
+        def start_django():
             logger.info("Starting Django server...")
-            options['use_reloader'] = False  # Disable the autoreloader
-            super(Command, self).handle(*args, **options)  # Explicitly pass the class and self
+            runserver_command = RunserverCommand()
+            runserver_command.run_from_argv([__name__, 'runserver', '--noreload'])
 
         # Start the Django server in a separate thread
-        django_thread = threading.Thread(target=start_django, args=args, kwargs=options)
+        django_thread = threading.Thread(target=start_django)
         django_thread.start()
 
-        # Start the telegram bot
-        logger.info("Starting telegram bot...")
-        run_dispatcher()
+        # Start the aiogram bot in the main thread
+        logger.info("Starting aiogram bot...")
+        asyncio.run(bot_main())
+
+        # Start the aiogram bot in a separate thread
+        def start_bot():
+            logger.info("Starting aiogram bot...")
+            asyncio.run(bot_main())
+
+        bot_thread = threading.Thread(target=start_bot)
+        bot_thread.start()
